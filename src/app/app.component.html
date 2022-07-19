@@ -1,0 +1,78 @@
+<ngx-graph
+  [view]="[800, 500]"
+  [links]="links"
+  [nodes]="nodes"
+  [layout]="layout"
+  [nodeWidth]="150"
+  [nodeHeight]="100"
+  [layoutSettings]="layoutSettings"
+  [curve]="curve"
+  [enableZoom]="true"
+  [draggingEnabled]="true"
+  [autoZoom]="true"
+>
+  <ng-template #defsTemplate>
+    <svg:marker
+      id="arrow"
+      viewBox="0 -5 10 10"
+      refX="8"
+      refY="0"
+      markerWidth="4"
+      markerHeight="4"
+      orient="auto"
+    >
+      <svg:path d="M0,-5L10,0L0,5" class="arrow-head" />
+    </svg:marker>
+    <svg:marker
+      id="arrowInverted"
+      viewBox="0 -5 10 10"
+      refX="0"
+      refY="0"
+      markerWidth="4"
+      markerHeight="4"
+      orient="auto"
+    >
+      <svg:path d="M10,-5 L15,5 L0,0" class="arrow-head" />
+    </svg:marker>
+  </ng-template>
+
+  <ng-template #nodeTemplate let-node>
+    <svg:g
+      class="node"
+      xmlns="http://www.w3.org/2000/xhtml"
+      width="150"
+      height="100"
+    >
+      <svg:foreignObject width="150" height="100">
+        <xhtml:div
+          class="cardContainer"
+          xmlns="http://www.w3.org/1999/xhtml"
+          [ngStyle]="getStyles(node)"
+          (dblclick)="test(node)"
+        >
+          <label class="name">{{node.label}}</label>
+          <label>{{node.data.role}}</label>
+          <label>{{node.data.office}}</label>
+        </xhtml:div>
+      </svg:foreignObject>
+    </svg:g>
+  </ng-template>
+
+  <ng-template #linkTemplate let-link>
+    <svg:g class="edge">
+      <svg:path
+        class="line"
+        stroke-width="2"
+        marker-end="url(#arrow)"
+        *ngIf="!link.data.invertArrow"
+      ></svg:path>
+
+      <svg:path
+        class="line"
+        stroke-width="2"
+        marker-start="url(#arrowInverted)"
+        *ngIf="link.data.invertArrow"
+      ></svg:path>
+    </svg:g>
+  </ng-template>
+</ngx-graph>
